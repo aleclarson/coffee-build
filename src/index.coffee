@@ -1,55 +1,28 @@
 
-childProcess = require "child_process"
 semver = require "semver"
 
 module.exports = (src, options = {}) ->
 
-  dest = options.o
-  bare = options.b
-  version = options.v
+  unless src
+    return console.log "missing src"
 
-  if not src
-    console.log "missing src"
-    return
+  unless dest = options.o
+    return console.log "missing dest [-o]"
 
-  if not dest
-    console.log "missing dest [-o]"
-    return
-
-  if not version
-    console.log "missing version [-v]"
-    return
+  unless version = options.v
+    return console.log "missing version [-v]"
 
   versions = require "../versions"
   version = semver.maxSatisfying versions, version
-  if not version
-    console.log "unsupported version: #{options.v}"
-    return
+  unless version
+    return console.log "unsupported version: #{options.v}"
 
-  command = "#{__dirname}/../versions/#{version}/lib/coffee-script/command"
-  args = [command, "-c"]
-  bare and args.push "-b"
-  dest and args.push "-o", dest
-  args.push src
+  process.argv = do ->
+    args = process.argv.slice 0, 2
+    args.push "-c"
+    args.push "-b" if options.b
+    args.push "-o", dest if dest
+    args.concat src
 
-  spawn "node", args,
-    cwd: process.cwd()
-    encoding: "utf8"
+  require("../versions/#{version}/lib/coffee-script/command").run()
 
-#
-# Helpers
-#
-
-trim = (str) -> str.replace /[\r\n]+$/, ""
-
-spawn = (command, args, options) ->
-
-  proc = childProcess.spawnSync command, args, options
-
-  if proc.error
-    throw proc.error
-
-  if proc.stderr.length > 0
-    throw Error trim proc.stderr
-
-  return trim proc.stdout
