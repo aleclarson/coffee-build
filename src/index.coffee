@@ -26,8 +26,8 @@ module.exports = (src, options = {}) ->
     console.log "unsupported version: #{options.v}"
     return
 
-  bin = "#{__dirname}/../versions/#{version}/bin/coffee"
-  args = [bin, "-c"]
+  command = "#{__dirname}/../versions/#{version}/lib/coffee-script/command"
+  args = [command, "-c"]
   bare and args.push "-b"
   dest and args.push "-o", dest
   args.push src
