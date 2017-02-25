@@ -1,5 +1,5 @@
 
-# coffee-build v1.0.0
+# coffee-build v1.1.0
 
 > Transpile .coffee using a specific version of `coffee-script`
 
