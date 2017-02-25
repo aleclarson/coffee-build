@@ -1,0 +1,52 @@
+{
+  "name": "coffeescript",
+  "description": "Unfancy JavaScript",
+  "keywords": [
+    "javascript",
+    "language",
+    "coffeescript",
+    "compiler"
+  ],
+  "author": "Jeremy Ashkenas",
+  "version": "2.0.0-alpha1",
+  "license": "MIT",
+  "engines": {
+    "node": ">=7.2.1"
+  },
+  "directories": {
+    "lib": "./lib/coffeescript"
+  },
+  "main": "./lib/coffeescript/coffeescript",
+  "bin": {
+    "coffee": "./bin/coffee",
+    "cake": "./bin/cake"
+  },
+  "files": [
+    "bin",
+    "lib",
+    "register.js",
+    "repl.js"
+  ],
+  "preferGlobal": true,
+  "scripts": {
+    "test": "node ./bin/cake test",
+    "test-harmony": "node --harmony ./bin/cake test"
+  },
+  "homepage": "http://coffeescript.org",
+  "bugs": "https://github.com/jashkenas/coffeescript/issues",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jashkenas/coffeescript.git"
+  },
+  "devDependencies": {
+    "docco": "~0.7.0",
+    "google-closure-compiler-js": "^20170124.0.0",
+    "highlight.js": "~9.9.0",
+    "jison": ">=0.4.17",
+    "marked": "^0.3.6",
+    "underscore": "~1.8.3"
+  },
+  "dependencies": {
+    "marked": "~0.3.6"
+  }
+}
