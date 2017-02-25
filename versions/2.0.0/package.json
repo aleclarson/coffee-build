@@ -14,9 +14,9 @@
     "node": ">=7.2.1"
   },
   "directories": {
-    "lib": "./lib/coffeescript"
+    "lib": "./lib/coffee-script"
   },
-  "main": "./lib/coffeescript/coffeescript",
+  "main": "./lib/coffee-script/coffeescript",
   "bin": {
     "coffee": "./bin/coffee",
     "cake": "./bin/cake"
