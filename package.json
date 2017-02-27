@@ -6,9 +6,6 @@
   "bin": {
     "coffee-build": "bin/coffee-build"
   },
-  "devDependencies": {
-    "coffee-script": "1.11.x"
-  },
   "dependencies": {
     "marked": "~0.3.6",
     "minimist": "^1.2.0",
