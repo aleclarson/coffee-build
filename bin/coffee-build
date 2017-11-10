@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+var minimist = require('minimist');
+
+var args = minimist(
+  process.argv.slice(2)
+);
+
+require('..')(
+  args._[0],
+  args
+);

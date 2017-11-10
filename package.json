@@ -1,0 +1,17 @@
+{
+  "name": "coffee-build",
+  "description": "Use a specific version of coffee-script in your build script",
+  "version": "1.2.1",
+  "main": "js/index",
+  "bin": {
+    "coffee-build": "bin/coffee-build"
+  },
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "semver": "^5.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aleclarson/coffee-build.git"
+  }
+}
