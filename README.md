@@ -1,5 +1,5 @@
 
-# coffee-build v1.1.0
+# coffee-build v1.2.0
 
 > Transpile .coffee using a specific version of `coffee-script`
 
@@ -15,7 +15,7 @@
 }
 ```
 
-#### 2. Users of your module must globally install `coffee-build`:
+#### 2. Users of your package must globally install `coffee-build`:
 
 ```sh
 [sudo] npm install -g coffee-build
