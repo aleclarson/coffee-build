@@ -14,10 +14,7 @@ let src = args[0]
 if (!src) fatal('missing input path')
 if (!args.o) fatal('missing output path (-o)')
 
-resolveVersion().then(coffeePath => {
-  console.log('Resolved:', coffeePath)
-  let name = /^coffee-?script/.exec(path.basename(coffeePath))[0]
-  let cmd = require(path.join(coffeePath, 'lib', name, 'command'))
+resolveVersion().then(cmd => {
   let argv = process.argv.slice(0, 2)
   argv.push('-c', '-b', '-o', args.o)
   if (args.m) argv.push('-m')
@@ -39,32 +36,49 @@ async function resolveVersion(range) {
   if (!semver.validRange(range))
     fatal('invalid version: ' + range)
 
-  let COFFEE_DIR = path.join(os.homedir(), '.coffee')
-  fs.writeDir(COFFEE_DIR)
+  let coffeeDir = path.join(os.homedir(), '.coffee')
+  fs.writeDir(coffeeDir)
 
-  let installed = fs.readDir(COFFEE_DIR)
-  let versions = installed.map(name => /-([^-]+)$/.exec(name)[1])
+  // Get pre-installed versions.
+  let installed = [], versions = []
+  fs.readDir(coffeeDir).forEach(name => {
+    let match = /-([^-]+)$/.exec(name)
+    if (match) {
+      installed.push(name)
+      versions.push(match[1])
+    }
+  })
 
   // Find an installed version.
   let version = semver.maxSatisfying(versions, range)
+
+  // Install missing versions.
+  let coffeePath
   if (version) {
     let name = installed[versions.indexOf(version)]
-    return path.join(COFFEE_DIR, name)
+    coffeePath = path.join(coffeeDir, name)
+  }
+  else {
+    let tarUrl = require('tar-url')
+    let url = await tarUrl('coffeescript', range)
+    if (!url) fatal('invalid version: ' + range)
+
+    console.log('Installing:', url)
+
+    // Install the missing version.
+    let tarInstall = require('tar-install')
+    let res = await tarInstall(url, coffeeDir)
+
+    let stderr = res.stderr.trim()
+    if (stderr) console.log(stderr)
+
+    coffeePath = res.path
+    version = JSON.parse(fs.readFile(coffeePath + '/package.json')).version
   }
 
-  // Resolve the missing version.
-  let tarUrl = require('tar-url')
-  let url = await tarUrl('coffeescript', range)
-  if (!url) fatal('invalid version: ' + range)
-
-  console.log('Installing:', url)
-
-  // Install the missing version.
-  let tarInstall = require('tar-install')
-  let res = await tarInstall(url, COFFEE_DIR)
-  let stderr = res.stderr.trim()
-  if (stderr) console.log(stderr)
-  return res.path
+  console.log('Resolved:', coffeePath)
+  let name = semver.gte(version, '2.0.0') ? 'coffeescript' : 'coffee-script'
+  return require(path.join(coffeePath, 'lib', name, 'command'))
 }
 
 function fatal(msg) {
