@@ -1,4 +1,4 @@
-# coffee-build v2.0.0
+# coffee-build v2.0.1
 
 Compile your `.coffee` files while sharing `coffeescript`
 versions between your packages.
